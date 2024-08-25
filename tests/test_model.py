@@ -74,8 +74,8 @@ def test_class_transaction_has_attributes(transaction, attribute_name, attribute
 
 @pytest.mark.skipif(not trasaction_defined, reason='Transaction class is not defined')
 @pytest.mark.parametrize('transaction_type, copies', [
-    (Transaction.SELL, 5),
-    (Transaction.SUPPLY, 10)
+    (1, 5),
+    (2, 10)
 ])   
 def test_class_transaction_initilization(transaction_type, copies):
     transaction = Transaction(transaction_type, copies)
