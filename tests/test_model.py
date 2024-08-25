@@ -74,8 +74,8 @@ def test_class_transaction_has_attributes(transaction, attribute_name, attribute
 
 @pytest.mark.skipif(not trasaction_defined, reason='Transaction class is not defined')
 @pytest.mark.parametrize('transaction_type, copies', [
-    (1, 5),
-    (2, 10)
+    (Transaction.SELL, 5),
+    (Transaction.SUPPLY, 10)
 ])   
 def test_class_transaction_initilization(transaction_type, copies):
     transaction = Transaction(transaction_type, copies)
@@ -208,15 +208,24 @@ def test_class_bookstore_has_methods(empty_bookstore, method_name, signature):
     
 
 @pytest.mark.skipif(not bookstore_defined, reason='Bookstore class is not defined')
-def test_class_bookstore_add_book_method_adds_book_to_catalog(empty_bookstore):
-    empty_bookstore.add_book('1234', 'Test Book', 10.0, 5.0, 10)
-    assert '1234' in empty_bookstore.catalog
-    assert isinstance(empty_bookstore.catalog['1234'], Book)
+@pytest.mark.parametrize('isbn, title, sale_price, purchase_price, quantity', [
+    ('1234', 'Test Book', 10.0, 5.0, 10),
+    ('5678', 'Test Book 2', 20.0, 10.0, 20),
+    ('91011', 'Test Book 3', 30.0, 15.0, 30),
+])
+def test_class_bookstore_add_book_method_adds_book_to_catalog(empty_bookstore, isbn, title, sale_price, purchase_price, quantity):
+    empty_bookstore.add_book(isbn, title, sale_price, purchase_price, quantity)
+    assert isbn in empty_bookstore.catalog
+    assert isinstance(empty_bookstore.catalog[isbn], Book)
 
 
 @pytest.mark.skipif(not bookstore_defined, reason='Bookstore class is not defined')
-def test_class_bookstore_does_not_add_book_to_catalog_if_isbn_already_exists(bookstore_with_books):
-    bookstore_with_books.add_book('1234', 'Test Book', 10.0, 5.0, 10)
+@pytest.mark.parametrize('isbn, title, sale_price, purchase_price, quantity', [
+    ('1234', 'Test Book', 10.0, 5.0, 10),
+    ('5678', 'Test Book 2', 20.0, 10.0, 20),
+])
+def test_class_bookstore_does_not_add_book_to_catalog_if_isbn_already_exists(bookstore_with_books, isbn, title, sale_price, purchase_price, quantity):
+    bookstore_with_books.add_book(isbn, title, sale_price, purchase_price, quantity)
     assert len(bookstore_with_books.catalog) == 2
 
 
@@ -227,8 +236,12 @@ def test_class_bookstore_delete_book_method_deletes_book_from_catalog(bookstore_
 
 
 @pytest.mark.skipif(not bookstore_defined, reason='Bookstore class is not defined')
-def test_class_bookstore_search_by_isbn_method_returns_book(bookstore_with_books):
-    assert bookstore_with_books.search_by_isbn('1234').isbn == '1234'
+@pytest.mark.parametrize('isbn', [
+    '1234',
+    '5678'
+])
+def test_class_bookstore_search_by_isbn_method_returns_book(bookstore_with_books, isbn):
+    assert bookstore_with_books.search_by_isbn(isbn).isbn == isbn
 
 @pytest.mark.skipif(not bookstore_defined, reason='Bookstore class is not defined')
 def test_class_bookstore_search_by_isbn_method_returns_none_if_isbn_not_found(bookstore_with_books):
@@ -239,12 +252,20 @@ def test_class_bookstore_sell_book_method_returns_false_if_book_not_found(bookst
     assert not bookstore_with_books.sell_book('12345', 5)
 
 @pytest.mark.skipif(not bookstore_defined, reason='Bookstore class is not defined')
-def test_class_bookstore_sell_book_method_returns_false_if_copies_sold_exceed_quantity(bookstore_with_books):
-    assert not bookstore_with_books.sell_book('1234', 11)
+@pytest.mark.parametrize('isbn, quantity', [
+    ('1234', 11),
+    ('5678', 21)
+])
+def test_class_bookstore_sell_book_method_returns_false_if_copies_sold_exceed_quantity(bookstore_with_books, isbn, quantity):
+    assert not bookstore_with_books.sell_book(isbn, quantity)
 
 @pytest.mark.skipif(not bookstore_defined, reason='Bookstore class is not defined')
-def test_class_bookstore_sell_book_method_returns_true_if_copies_sold_does_not_exceed_quantity(bookstore_with_books):
-    assert bookstore_with_books.sell_book('1234', 5)
+@pytest.mark.parametrize('isbn, quantity', [
+    ('1234', 5),
+    ('5678', 10)
+])
+def test_class_bookstore_sell_book_method_returns_true_if_copies_sold_does_not_exceed_quantity(bookstore_with_books, isbn, quantity):
+    assert bookstore_with_books.sell_book(isbn, quantity)
 
 
 @pytest.mark.skipif(not bookstore_defined, reason='Bookstore class is not defined')
@@ -253,9 +274,13 @@ def test_class_bookstore_supply_book_method_returns_false_if_book_not_found(book
 
 
 @pytest.mark.skipif(not bookstore_defined, reason='Bookstore class is not defined')
-def test_class_bookstore_supply_book_method_increases_quantity(bookstore_with_books):
-    bookstore_with_books.supply_book('1234', 5)
-    assert bookstore_with_books.search_by_isbn('1234').quantity == 15
+@pytest.mark.parametrize('isbn, total', [
+    ('1234', 15),
+    ('5678', 25)
+])
+def test_class_bookstore_supply_book_method_increases_quantity(bookstore_with_books, isbn, total):
+    bookstore_with_books.supply_book(isbn, 5)
+    assert bookstore_with_books.search_by_isbn(isbn).quantity == total
 
 
 @pytest.mark.skipif(not bookstore_defined, reason='Bookstore class is not defined')
