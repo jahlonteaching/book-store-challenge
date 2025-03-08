@@ -8,7 +8,6 @@ __pycache__/
 
 # IDE / editor specific files
 .vscode/
-.idea/
 *.sublime-project
 *.sublime-workspace
 
