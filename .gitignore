@@ -39,3 +39,4 @@ build/
 evaluation/submissions/*.py
 evaluation/results/*.txt
 .evaluation/*
+uv.lock
