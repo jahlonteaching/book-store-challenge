@@ -1,19 +1,7 @@
-[tool.poetry]
-name = "bookstore"
+[project]
+name = "book-store-challenge"
 version = "0.1.0"
-description = ""
-authors = ["jahlon <jahlon@gmail.com>"]
-readme = "README.md"
-
-[tool.poetry.dependencies]
-python = "^3.10"
-pytest = "^8.3.2"
-
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-
-[tool.poetry.scripts]
-bookstore = "bookstore.app:main"
+requires-python = ">=3.11"
+dependencies = [
+    "pytest>=8.3.5",
+]
