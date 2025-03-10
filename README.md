@@ -1,5 +1,7 @@
 # Book Store [![es](https://img.shields.io/badge/lang-es-green)](README.es.md "Versión en español")
 
+> **Total tests to pass: 56**
+
 Book store is an application used to asses the knowledge of OOP concepts in python. The application is a simple book store that allows users to add, remove, list and search for books. The application is implemented using classes and objects in python.
 
 The model of the application is as follows:

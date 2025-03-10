@@ -1,5 +1,7 @@
 # Tienda de libros [![en](https://img.shields.io/badge/lang-en-blue)](README.md "English version")
 
+> **Total de pruebas a evaluar: 56**
+
 La tienda de libros es una aplicación utilizada para evaluar el conocimiento de los conceptos de POO en Python. La aplicación es una simple tienda de libros que permite a los usuarios agregar, eliminar, listar y buscar libros. La aplicación está implementada utilizando clases y objetos en Python.
 
 El modelo de la aplicación es el siguiente:
